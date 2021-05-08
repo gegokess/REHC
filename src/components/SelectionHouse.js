@@ -16,9 +16,18 @@ class SelectionHouse extends React.Component {
 			<div className="flex">
 				<div className="w-1/2">
 					<div className="w-1/2 mx-auto">
-						<HomeInstallments name={"HeatPump"} handle={"hp"} />
-						<HomeInstallments name={"Solar Panels"} handle={"sp"} />
-						<HomeInstallments name={"Battery"} handle={"bat"} />
+						<HomeInstallments
+							name={"HeatPump"}
+							handle={"hp"}
+						></HomeInstallments>
+						<HomeInstallments
+							name={"Solar Panels"}
+							handle={"sp"}
+						></HomeInstallments>
+						<HomeInstallments
+							name={"Battery"}
+							handle={"bat"}
+						></HomeInstallments>
 					</div>
 				</div>
 				<div className="w-1/2 sectionIcon">as</div>
