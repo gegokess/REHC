@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
-import PriceChart from "./components/PriceChart";
-import SelectionSection from "./components/SelectionSection";
+import SelectionEV from "./components/SelectionEV";
 import SelectionHouse from "./components/SelectionHouse";
 import axios from "axios";
 
@@ -26,9 +25,8 @@ class App extends React.Component {
 				<div className="App">
 					<h1 className="text-4xl p-4">Electricity valuation</h1>
 					{/* <PriceChart data={this.state.data} /> */}
-					<SelectionSection>
-						<SelectionHouse></SelectionHouse>
-					</SelectionSection>
+					<SelectionHouse />
+					<SelectionEV />
 				</div>
 			);
 		}
