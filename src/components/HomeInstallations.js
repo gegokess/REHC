@@ -14,7 +14,6 @@ class HomeInstallations extends React.Component {
 			isChecked: !this.state.isChecked,
 		});
 	};
-
 	render() {
 		return (
 			<div className="flex mt-6">

@@ -1,37 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
+// import PriceChart from "./components/PriceChart";
 import SelectionEV from "./components/SelectionEV";
 import SelectionHouse from "./components/SelectionHouse";
-import axios from "axios";
 
-class App extends React.Component {
-	state = { data: [] };
+function App() {
+	const [data, setData] = useState(null);
+	const [pumpPower, setPumpPower] = useState(0);
+	const [carEnergy, setCarEnergy] = useState(0);
+	const [solarPower, setSolarPower] = useState(0);
+	const [batEnergy, setBatEnergy] = useState(0);
+	const [range, setRange] = useState(0);
+	const [carConsumption, setCarConsumption] = useState(0);
+	const [electricityPrice, setelectricityPrice] = useState(0);
 
-	async fetchPrices() {
-		await axios("https://api.awattar.de/v1/marketdata").then((response) => {
-			this.setState({
-				data: response.data.data,
-			});
-		});
-	}
-
-	componentDidMount() {
-		this.fetchPrices();
-	}
-
-	render() {
-		if (Object.keys(this.state.data).length) {
-			return (
-				<div className="App">
-					<h1 className="text-4xl p-4">Electricity valuation</h1>
-					{/* <PriceChart data={this.state.data} /> */}
-					<SelectionHouse />
-					<SelectionEV />
-				</div>
-			);
-		}
-		return <div></div>;
-	}
+	return (
+		<div className="App">
+			<h1 className="text-4xl p-4">Electricity valuation</h1>
+			{/* <PriceChart setData={setData} data={data} /> */}
+			<SelectionHouse
+				setPumpPower={setPumpPower}
+				pumpPower={pumpPower}
+				setSolarPower={setSolarPower}
+				setBatEnergy={setBatEnergy}
+				setelectricityPrice={setelectricityPrice}
+			/>
+			<SelectionEV
+				setCarEnergy={setCarEnergy}
+				setEvConsumption={setCarConsumption}
+				setRange={setRange}
+			/>
+		</div>
+	);
 }
 
 export default App;
