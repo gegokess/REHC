@@ -1,16 +1,26 @@
 import { PreviousMap } from "postcss";
 import React, { useState } from "react";
+import Typography from "@material-ui/core/Typography";
+import Slider from "@material-ui/core/Slider";
 
-function HomeInstallationsBattery({ onChange }) {
+function HomeInstallationsBattery({ onChange, batEnergy, setBatEnergy }) {
+	const handleChange = (event, newValue) => {
+		setBatEnergy(newValue);
+	};
+
 	return (
 		<div className="flex mt-6">
 			<label className="flex items-center">
-				<input
-					type="number"
-					className="form-checkbox"
-					onChange={(event) => onChange(event.target.value)}
+				<Typography id="discrete-slider-restrict" gutterBottom>
+					Battery size {batEnergy}
+				</Typography>
+				<Slider
+					value={batEnergy}
+					onChange={handleChange}
+					min={5}
+					max={30}
+					aria-labelledby="continuous-slider"
 				/>
-				<span className="ml-2">Battery</span>
 			</label>
 		</div>
 	);

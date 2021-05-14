@@ -1,19 +1,31 @@
 import { PreviousMap } from "postcss";
 import React, { useState } from "react";
+import Typography from "@material-ui/core/Typography";
+import Slider from "@material-ui/core/Slider";
 
-function HomeInstallationsSolarPanels({ onChange }) {
+export default function HomeInstallationsSolarPanels({
+	onChange,
+	solarPower,
+	setSolarPower,
+}) {
+	const handleChange = (event, newValue) => {
+		setSolarPower(newValue);
+	};
+
 	return (
 		<div className="flex mt-6">
 			<label className="flex items-center">
-				<input
-					type="number"
-					className="form-checkbox"
-					onChange={(event) => onChange(event.target.value)}
+				<Typography id="discrete-slider-restrict" gutterBottom>
+					Solar Panels {solarPower}
+				</Typography>
+				<Slider
+					value={solarPower}
+					onChange={handleChange}
+					min={5}
+					max={30}
+					aria-labelledby="continuous-slider"
 				/>
-				<span className="ml-2">Solar Panels</span>
 			</label>
 		</div>
 	);
 }
-
-export default HomeInstallationsSolarPanels;

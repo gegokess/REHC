@@ -5,28 +5,30 @@ import HomeInstallmentsBattery from "./HomeInstallationsBattery";
 
 export default function SelectionHouse({
 	setPumpPower,
-	setSolarPower,
-	setBatEnergy,
 	pumpPower,
-	setelectricityPrice,
+	setSolarPower,
+	solarPower,
+	setBatEnergy,
+	batEnergy,
+	setElectricityPrice,
 }) {
 	return (
-		<div className="flex border border-red-300">
-			<div className="w-1/2">
-				<div className="w-1/2 mx-auto">
-					<HomeInstallmentsHeatPump
-						pumpPower={pumpPower}
-						onChange={(value) => setPumpPower(value)}
-					/>
-					<HomeInstallationsSolarPanels
-						onChange={(value) => setSolarPower(value)}
-					/>
-					<HomeInstallmentsBattery
-						onChange={(value) => setBatEnergy(value)}
-					/>
-				</div>
-			</div>
-			<div className="w-1/2 sectionIcon">as</div>
+		<div>
+			<HomeInstallmentsHeatPump
+				pumpPower={pumpPower}
+				setPumpPower={setPumpPower}
+				onChange={(value) => setPumpPower(value)}
+			/>
+			<HomeInstallationsSolarPanels
+				solarPower={solarPower}
+				setSolarPower={setSolarPower}
+				onChange={(value) => setSolarPower(value)}
+			/>
+			<HomeInstallmentsBattery
+				batEnergy={batEnergy}
+				setBatEnergy={setBatEnergy}
+				onChange={(value) => setBatEnergy(value)}
+			/>
 		</div>
 	);
 }
