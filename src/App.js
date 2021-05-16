@@ -4,8 +4,8 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 // import PriceChart from "./components/PriceChart";
 import Selection from "./components/Selection";
-import SelectionHouse from "./components/SelectionHouse";
 import Box from "@material-ui/core/Box";
+import Results from "./components/Results";
 
 function App() {
 	// Solar
@@ -61,7 +61,7 @@ function App() {
 					</Grid>
 
 					<Grid item lg={6}>
-						asdf
+						<Results></Results>
 					</Grid>
 				</Grid>
 

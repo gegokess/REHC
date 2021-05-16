@@ -32,17 +32,6 @@ export default function HomeInstallation({
 
 	return (
 		<div>
-			{/* <FormControlLabel
-				control={
-					<Switch
-						checked={checked}
-						onChange={toggleChecked}
-						name="checkedB"
-						color="primary"
-					/>
-				}
-				label={name}
-			/> */}
 			<FormControl>
 				<TextField
 					type="number"

@@ -31,7 +31,7 @@ export default function Selection({ items, useSelection, name }) {
 						justify="center"
 						direction="column"
 					>
-						<Typography>{name}</Typography>
+						<Typography variant="h6">{name}</Typography>
 					</Grid>
 				</Grid>
 
