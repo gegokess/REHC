@@ -1,34 +1,30 @@
 import React, { useState } from "react";
-import HomeInstallmentsHeatPump from "./HomeInstallationsHeatPump";
-import HomeInstallationsSolarPanels from "./HomeInstallationsSolarPanels";
-import HomeInstallmentsBattery from "./HomeInstallationsBattery";
+import HomeInstallation from "./HomeInstallation";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
 
-export default function SelectionHouse({
-	setPumpPower,
-	pumpPower,
-	setSolarPower,
-	solarPower,
-	setBatEnergy,
-	batEnergy,
-	setElectricityPrice,
-}) {
+export default function SelectionHouse({ pumpPower, solarPower, batEnergy }) {
 	return (
 		<div>
-			<HomeInstallmentsHeatPump
-				pumpPower={pumpPower}
-				setPumpPower={setPumpPower}
-				onChange={(value) => setPumpPower(value)}
-			/>
-			<HomeInstallationsSolarPanels
-				solarPower={solarPower}
-				setSolarPower={setSolarPower}
-				onChange={(value) => setSolarPower(value)}
-			/>
-			<HomeInstallmentsBattery
-				batEnergy={batEnergy}
-				setBatEnergy={setBatEnergy}
-				onChange={(value) => setBatEnergy(value)}
-			/>
+			<Card>
+				<Typography variant="overline" display="block" gutterBottom>
+					House
+				</Typography>
+				<Divider />
+				<CardContent>
+					<HomeInstallation
+						name={"Heat Pump size"}
+						item={pumpPower}
+					/>
+					<HomeInstallation
+						name={"Solar Panel size"}
+						item={solarPower}
+					/>
+					<HomeInstallation name={"Battery size"} item={batEnergy} />
+				</CardContent>
+			</Card>
 		</div>
 	);
 }

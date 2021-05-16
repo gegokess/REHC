@@ -11,8 +11,11 @@ import Grid from "@material-ui/core/Grid";
 import Slider from "@material-ui/core/Slider";
 
 export default function SelectionEV({
+	setCarConsumption,
 	carConsumption,
+	setCarEnergy,
 	carEnergy,
+	setRange,
 	range,
 	useCar,
 	setUseCar,
@@ -24,10 +27,10 @@ export default function SelectionEV({
 					<Grid item xs={2}>
 						<Switch
 							checked={useCar}
-							onChange={(event) => {
-								setUseCar(!useCar);
+							onChange={(event, newValue) => {
+								setUseCar(newValue);
 							}}
-							name="checked"
+							name="checkedB"
 							color="primary"
 						/>
 					</Grid>
@@ -45,23 +48,42 @@ export default function SelectionEV({
 
 				<Divider />
 				<CardContent>
-					<HomeInstallation
+					<Typography id="carEnergy-slider" gutterBottom>
+						EV battery size
+					</Typography>
+					<Slider
+						value={carEnergy}
+						onChange={(event, newValue) => {
+							setCarEnergy(newValue);
+						}}
+						valueLabelDisplay="auto"
+						min={15}
+						max={100}
+						step={5}
+						aaria-labelledby="carEnergy-slider"
 						disabled={!useCar}
-						name={"Battery size"}
-						item={carEnergy}
+					/>
+					<Typography id="carConsumption-slider" gutterBottom>
+						Car consumption
+					</Typography>
+					<Slider
+						value={carConsumption}
+						onChange={(event, newValue) => {
+							setCarConsumption(newValue);
+						}}
+						valueLabelDisplay="auto"
+						min={15}
+						max={25}
+						aaria-labelledby="carConsumption-slider"
+						disabled={!useCar}
 					/>
 					<HomeInstallation
-						disabled={!useCar}
-						name={"Car Consumption"}
-						item={carConsumption}
-					/>
-					<HomeInstallation
-						disabled={!useCar}
 						name={"Car Range"}
-						item={range}
-						min={2000}
-						max={100000}
-						step={2000}
+						setValue={setRange}
+						value={range}
+						min={5000}
+						max={50000}
+						step={1000}
 					/>
 				</CardContent>
 			</Card>

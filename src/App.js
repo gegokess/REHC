@@ -3,47 +3,63 @@ import "./App.css";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 // import PriceChart from "./components/PriceChart";
-import SelectionEV from "./components/SelectionEV";
+import Selection from "./components/Selection";
 import SelectionHouse from "./components/SelectionHouse";
+import Box from "@material-ui/core/Box";
 
 function App() {
+	// Solar
+	const useSolar = useSwitchInput(false);
+	const solarPower = useUnitFormInput("Solar power size", 15, "kWp");
+
+	// Heat Pump
+	const usePump = useSwitchInput(false);
+	const pumpPower = useUnitFormInput("Heat pump power", 5, "kW");
+
+	// EV
+	const useCar = useSwitchInput(true);
+	const carEnergy = useUnitFormInput("Car battery size", 40, "kWh");
+	const carConsumption = useUnitFormInput("Car consumption", 14, "kWh/100km");
+	const range = useUnitFormInput("Estimated range per year", 15000, "km");
+
+	// Battery
+	const useBattery = useSwitchInput(false);
+	const batEnergy = useUnitFormInput("Battery size", 17, "kWh");
+
+	// House
 	const [data, setData] = useState(null);
-	const [pumpPower, setPumpPower] = useState(5);
-	const [carEnergy, setCarEnergy] = useState(52);
-	const [solarPower, setSolarPower] = useState(15);
-	const [batEnergy, setBatEnergy] = useState(17);
-	const [range, setRange] = useState(15000);
-	const [carConsumption, setCarConsumption] = useState(14);
-	const [electricityPrice, setElectricityPrice] = useState(28.5);
+	// const electricityPrice = useFormInput(28.5);
 
 	return (
 		<div className="App">
 			<Container maxWidth="lg">
 				<h1 className="text-4xl p-4">Electricity valuation</h1>
 				<Grid container spacing={3} justify="center">
-					<Grid item lg={6}>
-						<Grid container spacing={3} justify="center">
-							<Grid item lg={10}>
-								<SelectionHouse
-									setPumpPower={setPumpPower}
-									pumpPower={pumpPower}
-									setSolarPower={setSolarPower}
-									solarPower={solarPower}
-									setBatEnergy={setBatEnergy}
-									batEnergy={batEnergy}
-									setElectricityPrice={setElectricityPrice}
-								/>
-								<SelectionEV
-									setCarEnergy={setCarEnergy}
-									carEnergy={carEnergy}
-									setCarConsumption={setCarConsumption}
-									carConsumption={carConsumption}
-									setRange={setRange}
-									range={range}
-								/>
-							</Grid>
-						</Grid>
+					<Grid item xs={12} lg={6}>
+						<Box flexDirection="column">
+							<Selection
+								name="Solar Panels"
+								items={[solarPower]}
+								useSelection={useSolar}
+							/>
+							<Selection
+								name="Battery"
+								items={[batEnergy]}
+								useSelection={useBattery}
+							/>
+							<Selection
+								name="Heat pump"
+								items={[pumpPower]}
+								useSelection={usePump}
+							/>
+							<Selection
+								name="Electric vehicle"
+								items={[carEnergy, carConsumption, range]}
+								useSelection={useCar}
+							/>
+						</Box>
 					</Grid>
+
 					<Grid item lg={6}>
 						asdf
 					</Grid>
@@ -51,10 +67,39 @@ function App() {
 
 				{/* <PriceChart setData={setData} data={data} /> */}
 
-				<div>Result: {range * carConsumption}</div>
+				<div>Result: {range.value * carConsumption.value}</div>
 			</Container>
 		</div>
 	);
+
+	function useSwitchInput(initialValue) {
+		const [value, setValue] = useState(initialValue);
+
+		function handleChange(e) {
+			setValue(!value);
+		}
+
+		return {
+			value,
+			onChange: handleChange,
+		};
+	}
+
+	function useUnitFormInput(name, initialValue, unit) {
+		const [value, setValue] = useState(initialValue);
+
+		function handleChange(e) {
+			console.log(value, e.target.value);
+			setValue(e.target.value);
+		}
+
+		return {
+			name,
+			value,
+			onChange: handleChange,
+			unit: unit,
+		};
+	}
 }
 
 export default App;
