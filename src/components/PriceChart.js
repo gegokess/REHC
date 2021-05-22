@@ -3,16 +3,11 @@ import React from "react";
 import axios from "axios";
 
 function PriceChart({ setData, data }) {
-	console.log(setData);
 	const fetchPrices = async () => {
 		await axios("https://api.awattar.de/v1/marketdata").then((response) => {
 			setData(response.data.data);
 		});
 	};
-
-	React.useEffect(() => {
-		fetchPrices();
-	});
 
 	if (data) {
 		const chartData = {
