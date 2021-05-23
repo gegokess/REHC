@@ -1,38 +1,72 @@
-import React, { useState } from "react";
-import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Slider from "@material-ui/core/Slider";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import InputLabel from "@material-ui/core/InputLabel";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Switch from "@material-ui/core/Switch";
-import TextField from "@material-ui/core/TextField";
-import { Divider } from "@material-ui/core";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import Input from "@material-ui/core/Input";
+import React, { useState, useContext } from "react";
+import {
+	Slider,
+	SliderTrack,
+	SliderFilledTrack,
+	SliderThumb,
+} from "@chakra-ui/react";
+
+import {
+	NumberInput,
+	NumberInputField,
+	NumberInputStepper,
+	NumberIncrementStepper,
+	NumberDecrementStepper,
+} from "@chakra-ui/react";
+
+import { Flex, Spacer } from "@chakra-ui/react";
+import { CalculationContext } from "../context/CalculationContext";
 
 export default function HomeInstallation({
 	name,
 	min,
 	max,
 	step,
-	item,
+	// item,
 	disabled,
 }) {
 	const [checked, setChecked] = useState(true);
+	const { ev } = useContext(CalculationContext);
 
 	const toggleChecked = () => {
 		setChecked((prev) => !prev);
 	};
 
+	const { range } = ev;
+	const item = range;
+
 	return (
 		<div>
-			<FormControl>
+			<Flex>
+				<Slider
+					flex="1"
+					focusThumbOnChange={false}
+					value={item.value}
+					onChange={item.onChange}
+					min={0}
+					max={15000}
+					step={1000}
+				>
+					<SliderTrack>
+						<SliderFilledTrack />
+					</SliderTrack>
+					<SliderThumb boxSize={6} />
+				</Slider>
+				<NumberInput
+					maxW="100px"
+					ml="2rem"
+					value={item.value}
+					onChange={item.onChange}
+				>
+					<NumberInputField />
+					<NumberInputStepper>
+						<NumberIncrementStepper />
+						<NumberDecrementStepper />
+					</NumberInputStepper>
+				</NumberInput>
+			</Flex>
+
+			{/* 	<FormControl>
 				<TextField
 					type="number"
 					textAlign="center"
@@ -53,7 +87,7 @@ export default function HomeInstallation({
 				<FormHelperText id="standard-helper-text">
 					{item.name} [{item.unit}]
 				</FormHelperText>
-			</FormControl>
+			</FormControl> */}
 		</div>
 	);
 }

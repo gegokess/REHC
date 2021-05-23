@@ -73,8 +73,8 @@ export const CalculationProvider = function (props) {
 	function useUnitFormInput(name, initialValue, unit) {
 		const [value, setValue] = useState(initialValue);
 
-		function handleChange(e) {
-			setValue(e.target.value);
+		function handleChange(value) {
+			setValue(value);
 		}
 
 		return {
