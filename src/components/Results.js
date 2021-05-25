@@ -1,32 +1,22 @@
+import { Heading, Box } from "@chakra-ui/layout";
 import React, { useContext } from "react";
 
 import { CalculationContext } from "../context/CalculationContext";
 
 export default function Selection({ items, useSelection, name }) {
-	const { ev } = useContext(CalculationContext);
+	const { results } = useContext(CalculationContext);
+	const { solarProduction, autarky, selfConsumption } = results;
 
 	return (
 		<div>
-			Results
-			{/* <Card> 
-				<div className="mt-5">
-					<TextField
-						label="Captive use"
-						id="outlined-start-adornment"
-						className={clsx(classes.margin, classes.textField)}
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position="start">
-									kWh
-								</InputAdornment>
-							),
-							readOnly: true,
-						}}
-						variant="outlined"
-						defaultValue={ev.charging.goal.value}
-					/>
-				</div>
-			</Card>*/}
+			<Heading>Results</Heading>
+			<Box>
+				{"Solar Production"} {solarProduction}
+			</Box>
+			<Box>
+				{"Autarkie"} {autarky}
+			</Box>
+			<Box>{selfConsumption}</Box>
 		</div>
 	);
 }

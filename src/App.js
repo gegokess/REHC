@@ -37,7 +37,9 @@ function App() {
 								<Selections />
 							</Box>
 
-							<Box w="100%" bg="blue.500"></Box>
+							<Box w="100%">
+								<Results></Results>
+							</Box>
 						</Grid>
 					</Container>
 				</ChakraProvider>

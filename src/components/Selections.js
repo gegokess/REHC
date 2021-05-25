@@ -7,7 +7,7 @@ import Selection from "./Selection";
 import { AddIcon } from "@chakra-ui/icons";
 
 export default function Selections() {
-	const components = useContext(CalculationContext);
+	const { components } = useContext(CalculationContext);
 
 	return (
 		<Box align="center">

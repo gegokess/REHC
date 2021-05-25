@@ -4,6 +4,18 @@ import { createContext, useContext, useState } from "react";
 export const CalculationContext = createContext();
 
 export const CalculationProvider = function (props) {
+	// House
+	const elecDemandHouse = useUnitFormInput(
+		"House electricity demand",
+		3000,
+		"kWh",
+		250,
+		7500,
+		500
+	);
+
+	const houseArea = useUnitFormInput("House area", 150, "m²", 50, 400, 10);
+
 	// Solar
 	const useSolar = useSwitchInput(false);
 	const modulePower = useUnitFormInput(
@@ -26,6 +38,14 @@ export const CalculationProvider = function (props) {
 	// Heat Pump
 	const usePump = useSwitchInput(false);
 	const pumpPower = useUnitFormInput("Heat pump power", 5, "kW", 1, 15, 1);
+	const heatingDemandHouse = useUnitFormInput(
+		"House heating demand",
+		3000,
+		"kWh",
+		500,
+		10000,
+		500
+	);
 
 	// EV
 	const useCar = useSwitchInput(true);
@@ -72,11 +92,18 @@ export const CalculationProvider = function (props) {
 
 	// Battery
 	const useBattery = useSwitchInput(false);
-	const batEnergy = useUnitFormInput("Battery size", 17, "kWh", 2, 50, 1);
+	const batEnergy = useUnitFormInput("Battery size", 10, "kWh", 2, 25, 1);
 
 	// House
 	const [data, setData] = useState(null);
 	// const electricityPrice = useFormInput(28.5);
+
+	const house = {
+		id: 0,
+		name: "House",
+		active: true,
+		items: [elecDemandHouse, houseArea, heatingDemandHouse],
+	};
 
 	const ev = {
 		id: 1,
@@ -112,7 +139,49 @@ export const CalculationProvider = function (props) {
 		items: [modulePower, moduleAmount],
 	};
 
-	const components = [ev, solar, battery, hp];
+	const components = [house, ev, solar, battery, hp];
+
+	const solarProduction = moduleAmount.value * modulePower.value;
+	const autarky = calcAutarky(solarProduction, batEnergy.value);
+	const selfConsumption = calcSelfConsumptionFactor(
+		solarProduction,
+		batEnergy.value
+	);
+	const gridConsumption = 0;
+	const gridFeedIn = 0;
+
+	function calcAutarky(solarProduction, batEnergy) {
+		const solarFactor = solarProduction / 10 / elecDemandHouse.value;
+		const batteryFactor = batEnergy / (elecDemandHouse.value / 1000);
+
+		return Math.max((solarFactor * batteryFactor) / 2.25, 0.99);
+	}
+
+	function calcSelfConsumptionFactor(solarProduction, batEnergy) {
+		const solarFactor = solarProduction / 10 / elecDemandHouse.value;
+		const batteryFactor = batEnergy / (elecDemandHouse.value / 1000);
+
+		console.log(
+			solarFactor,
+			batteryFactor,
+			(batteryFactor / 2.5) * 99,
+			(solarFactor / 2.5) * 59
+		);
+
+		const calcSelfConsumptionFactor =
+			Math.min(batteryFactor / elecDemandHouse.value / 2.5, 1) * 99 -
+			Math.min(solarFactor / elecDemandHouse.value / 2.5, 1) * 59;
+
+		return Math.max(calcSelfConsumptionFactor, 0.99);
+	}
+
+	const results = {
+		solarProduction,
+		autarky,
+		selfConsumption,
+		gridConsumption,
+		gridFeedIn,
+	};
 
 	function useSwitchInput(initialValue) {
 		const [value, setValue] = useState(initialValue);
@@ -148,7 +217,7 @@ export const CalculationProvider = function (props) {
 	function toggleComponent() {}
 
 	return (
-		<CalculationContext.Provider value={components}>
+		<CalculationContext.Provider value={{ results, components }}>
 			{props.children}
 		</CalculationContext.Provider>
 	);
