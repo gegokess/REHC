@@ -5,18 +5,34 @@ import { CalculationContext } from "../context/CalculationContext";
 
 export default function Selection({ items, useSelection, name }) {
 	const { results } = useContext(CalculationContext);
-	const { solarProduction, autarky, selfConsumption } = results;
+	const {
+		elecDemandHousePerDay,
+		solarProductionPerDay,
+		gridConsumption,
+		gridFeedIn,
+		autarky,
+	} = results;
 
 	return (
-		<div>
+		<Box color="white">
 			<Heading>Results</Heading>
 			<Box>
-				{"Solar Production"} {solarProduction}
+				<Box>
+					{"Solar Production"} {solarProductionPerDay}
+				</Box>
+				<Box>
+					{"Autarkie"} {autarky}
+				</Box>
+				<Box>
+					{"gridConsumption"} {gridConsumption}
+				</Box>
+				<Box>
+					{"gridFeedIn"} {gridFeedIn * 0.11} €
+				</Box>
+				<Box>
+					{"elecDemandHousePerDay"} {elecDemandHousePerDay}
+				</Box>
 			</Box>
-			<Box>
-				{"Autarkie"} {autarky}
-			</Box>
-			<Box>{selfConsumption}</Box>
-		</div>
+		</Box>
 	);
 }

@@ -1,28 +1,25 @@
 import React, { setState, useContext } from "react";
 import HomeInstallation from "./Item";
 
-import { Box, IconButton } from "@chakra-ui/react";
+import { Spacer, IconButton, Wrap, WrapItem } from "@chakra-ui/react";
 import { CalculationContext } from "../context/CalculationContext";
 import Selection from "./Selection";
-import { AddIcon } from "@chakra-ui/icons";
 
 export default function Selections() {
 	const { components } = useContext(CalculationContext);
 
 	return (
-		<Box align="center">
+		<Wrap columns={2} spacing={10} justify="center">
 			{components.map((component) => (
-				<Selection
-					name={component.name}
-					items={component.items}
-					id={component.id}
-				/>
+				<WrapItem key={component.id}>
+					<Selection
+						name={component.name}
+						items={component.items}
+						id={component.id}
+						imagePath={component.imagePath}
+					/>
+				</WrapItem>
 			))}
-			<IconButton
-				colorScheme="blue"
-				aria-label="Search database"
-				icon={<AddIcon />}
-			/>
-		</Box>
+		</Wrap>
 	);
 }

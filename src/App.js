@@ -26,21 +26,22 @@ function App() {
 
 	return (
 		<CalculationProvider>
-			<div className="App">
+			<div className="App" style={{ background: "#1B232C" }}>
 				<ChakraProvider>
-					<Container maxW="container.lg">
-						<Heading my={4} size="xl">
+					<Container
+						maxW={{
+							base: "100%",
+							md: "container.md",
+							lg: "80%",
+						}}
+					>
+						<Heading my={4} size="xl" color="white">
 							Electricity valuation
 						</Heading>
-						<Grid w="100%" templateColumns="repeat(2, 1fr)" gap={6}>
-							<Box w="100%">
-								<Selections />
-							</Box>
-
-							<Box w="100%">
-								<Results></Results>
-							</Box>
-						</Grid>
+						<Results></Results>
+						<Box width="100%">
+							<Selections />
+						</Box>
 					</Container>
 				</ChakraProvider>
 			</div>

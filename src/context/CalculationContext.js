@@ -28,10 +28,10 @@ export const CalculationProvider = function (props) {
 	);
 	const moduleAmount = useUnitFormInput(
 		"Amount of Modules",
-		42,
+		30,
 		"",
 		6,
-		150,
+		72,
 		6
 	);
 
@@ -45,6 +45,25 @@ export const CalculationProvider = function (props) {
 		500,
 		10000,
 		500
+	);
+
+	const useGrid = useSwitchInput(true);
+	const gridElectricity = useUnitFormInput(
+		"Grid electricity price",
+		28.5,
+		"ct",
+		20,
+		35,
+		0.5
+	);
+
+	const feedInTarif = useUnitFormInput(
+		"Grid feed in tarif",
+		8,
+		"ct",
+		0,
+		25,
+		1
 	);
 
 	// EV
@@ -101,6 +120,7 @@ export const CalculationProvider = function (props) {
 	const house = {
 		id: 0,
 		name: "House",
+		imagePath: "home.png",
 		active: true,
 		items: [elecDemandHouse, houseArea, heatingDemandHouse],
 	};
@@ -108,19 +128,21 @@ export const CalculationProvider = function (props) {
 	const ev = {
 		id: 1,
 		name: "Electric vehicle",
+		imagePath: "car.png",
 		active: useCar,
 		items: [
 			carEnergy,
-			carConsumption,
-			range,
+			// carConsumption,
+			// range,
 			carChargeLevel,
-			carChargeGoal,
+			//carChargeGoal,
 		],
 	};
 
 	const hp = {
 		id: 2,
 		name: "Heat Pump",
+		imagePath: "fan.png",
 		active: usePump,
 		items: [pumpPower],
 	};
@@ -128,6 +150,7 @@ export const CalculationProvider = function (props) {
 	const battery = {
 		id: 3,
 		name: "House battery",
+		imagePath: "battery.png",
 		active: useBattery,
 		items: [batEnergy],
 	};
@@ -135,52 +158,55 @@ export const CalculationProvider = function (props) {
 	const solar = {
 		id: 4,
 		name: "Solar Panels",
+		imagePath: "solar-panel.png",
 		active: useSolar,
 		items: [modulePower, moduleAmount],
 	};
 
-	const components = [house, ev, solar, battery, hp];
+	const grid = {
+		id: 5,
+		name: "Grid",
+		imagePath: "power-line.png",
+		active: useGrid,
+		items: [gridElectricity, feedInTarif],
+	};
 
-	const solarProduction = moduleAmount.value * modulePower.value;
-	const autarky = calcAutarky(solarProduction, batEnergy.value);
-	const selfConsumption = calcSelfConsumptionFactor(
-		solarProduction,
-		batEnergy.value
+	const summerDay = {
+		solarPerDay: 4.3,
+	};
+
+	const winterDay = {
+		solarPerDay: 0.86,
+	};
+
+	const elecDemandHeatPump = 0;
+
+	const components = [house, ev, solar, grid, battery, hp];
+
+	const elecDemandHousePerDay =
+		(elecDemandHouse.value - elecDemandHeatPump) / 365;
+
+	const solarProductionPerDay =
+		(winterDay.solarPerDay * moduleAmount.value * modulePower.value) / 1000;
+	const gridConsumption = Math.max(
+		elecDemandHousePerDay - solarProductionPerDay,
+		0
 	);
-	const gridConsumption = 0;
-	const gridFeedIn = 0;
+	const gridFeedIn = Math.max(
+		solarProductionPerDay - elecDemandHousePerDay,
+		0
+	);
 
-	function calcAutarky(solarProduction, batEnergy) {
-		const solarFactor = solarProduction / 10 / elecDemandHouse.value;
-		const batteryFactor = batEnergy / (elecDemandHouse.value / 1000);
-
-		return Math.max((solarFactor * batteryFactor) / 2.25, 0.99);
-	}
-
-	function calcSelfConsumptionFactor(solarProduction, batEnergy) {
-		const solarFactor = solarProduction / 10 / elecDemandHouse.value;
-		const batteryFactor = batEnergy / (elecDemandHouse.value / 1000);
-
-		console.log(
-			solarFactor,
-			batteryFactor,
-			(batteryFactor / 2.5) * 99,
-			(solarFactor / 2.5) * 59
-		);
-
-		const calcSelfConsumptionFactor =
-			Math.min(batteryFactor / elecDemandHouse.value / 2.5, 1) * 99 -
-			Math.min(solarFactor / elecDemandHouse.value / 2.5, 1) * 59;
-
-		return Math.max(calcSelfConsumptionFactor, 0.99);
-	}
+	const autarky =
+		Math.max(elecDemandHousePerDay - gridConsumption, 0) /
+		elecDemandHousePerDay;
 
 	const results = {
-		solarProduction,
-		autarky,
-		selfConsumption,
+		elecDemandHousePerDay,
+		solarProductionPerDay,
 		gridConsumption,
 		gridFeedIn,
+		autarky,
 	};
 
 	function useSwitchInput(initialValue) {
@@ -213,8 +239,6 @@ export const CalculationProvider = function (props) {
 			step,
 		};
 	}
-
-	function toggleComponent() {}
 
 	return (
 		<CalculationContext.Provider value={{ results, components }}>
