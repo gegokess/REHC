@@ -2,13 +2,14 @@ import React, { useContext } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 
 import "./App.css";
-import { Grid, GridItem, Box } from "@chakra-ui/react";
+import { Grid, GridItem, Box, Center } from "@chakra-ui/react";
 import { Container, Heading } from "@chakra-ui/react";
-import Results from "./components/Results";
+import ResultHeader from "./components/ResultHeader";
 import Selection from "./components/Selection";
 import Selections from "./components/Selections";
 import { CalculationProvider } from "./context/CalculationContext";
 import HomeInstallation from "./components/Item";
+import DaySelection from "./components/daySelection";
 
 function App() {
 	// Fetch Sun Data
@@ -38,7 +39,11 @@ function App() {
 						<Heading my={4} size="xl" color="white">
 							Electricity valuation
 						</Heading>
-						<Results></Results>
+						<Center>
+							<DaySelection></DaySelection>
+						</Center>
+
+						<ResultHeader></ResultHeader>
 						<Box width="100%">
 							<Selections />
 						</Box>

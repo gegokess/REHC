@@ -1,5 +1,5 @@
 import { useConst } from "@chakra-ui/hooks";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export const CalculationContext = createContext();
 
@@ -49,7 +49,7 @@ export const CalculationProvider = function (props) {
 
 	const useGrid = useSwitchInput(true);
 	const gridElectricity = useUnitFormInput(
-		"Grid electricity price",
+		"Electricity tariff",
 		28.5,
 		"ct",
 		20,
@@ -58,7 +58,7 @@ export const CalculationProvider = function (props) {
 	);
 
 	const feedInTarif = useUnitFormInput(
-		"Grid feed in tarif",
+		"Grid feed in tariff",
 		8,
 		"ct",
 		0,
@@ -171,13 +171,31 @@ export const CalculationProvider = function (props) {
 		items: [gridElectricity, feedInTarif],
 	};
 
+	const winterDay = {
+		id: 1,
+		title: "Winter day",
+		icon: "snowflake.png",
+		active: false,
+		solarPerDay: 0.86,
+	};
+
+	const averageDay = {
+		id: 2,
+		title: "Average day",
+		icon: "cloudy.png",
+		active: true,
+		solarPerDay: 2.85,
+	};
+
 	const summerDay = {
+		id: 3,
+		title: "Summer day",
+		icon: "sun.png",
+		active: false,
 		solarPerDay: 4.3,
 	};
 
-	const winterDay = {
-		solarPerDay: 0.86,
-	};
+	const dayTypes = [winterDay, averageDay, summerDay];
 
 	const elecDemandHeatPump = 0;
 
@@ -187,7 +205,8 @@ export const CalculationProvider = function (props) {
 		(elecDemandHouse.value - elecDemandHeatPump) / 365;
 
 	const solarProductionPerDay =
-		(winterDay.solarPerDay * moduleAmount.value * modulePower.value) / 1000;
+		(averageDay.solarPerDay * moduleAmount.value * modulePower.value) /
+		1000;
 	const gridConsumption = Math.max(
 		elecDemandHousePerDay - solarProductionPerDay,
 		0
@@ -225,14 +244,14 @@ export const CalculationProvider = function (props) {
 	function useUnitFormInput(name, initialValue, unit, min, max, step) {
 		const [value, setValue] = useState(initialValue);
 
-		function handleChange(value) {
+		function onChange(value) {
 			setValue(value);
 		}
 
 		return {
 			name,
 			value,
-			onChange: handleChange,
+			onChange,
 			unit,
 			min,
 			max,
@@ -241,7 +260,7 @@ export const CalculationProvider = function (props) {
 	}
 
 	return (
-		<CalculationContext.Provider value={{ results, components }}>
+		<CalculationContext.Provider value={{ results, components, dayTypes }}>
 			{props.children}
 		</CalculationContext.Provider>
 	);
