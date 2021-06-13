@@ -17,6 +17,7 @@ export default function daySelectionElement({ day, active, onClick }) {
       color={active ? "white" : "inherit"}
       bgColor={active ? "rgba(52, 152, 219, 0.5)" : null}
       borderColor={active ? "none" : "inherit"}
+      border="none"
       onClick={onClick}
       cursor="pointer"
     >

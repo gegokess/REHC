@@ -26,16 +26,16 @@ export const CalculationProvider = function (props) {
     400,
     25
   );
-  const moduleAmount = useUnitFormInput("Amount of Modules", 30, "", 6, 72, 6);
+  const moduleAmount = useUnitFormInput("Amount of Modules", 24, "", 6, 48, 6);
 
   // Heat Pump
   const usePump = useSwitchInput(false);
   const pumpPower = useUnitFormInput("Heat pump power", 5, "kW", 1, 15, 1);
   const heatingDemandHouse = useUnitFormInput(
     "House heating demand",
-    3000,
+    0,
     "kWh",
-    500,
+    0,
     10000,
     500
   );
@@ -83,7 +83,7 @@ export const CalculationProvider = function (props) {
     60,
     "%",
     0,
-    99,
+    80,
     1
   );
   const carChargeGoal = useUnitFormInput(
@@ -97,7 +97,7 @@ export const CalculationProvider = function (props) {
 
   // Battery
   const useBattery = useSwitchInput(false);
-  const batEnergy = useUnitFormInput("Battery size", 10, "kWh", 2, 25, 1);
+  const batEnergy = useUnitFormInput("Battery size", 12, "kWh", 2, 25, 1);
 
   // House
   const [data, setData] = useState(null);
@@ -108,7 +108,7 @@ export const CalculationProvider = function (props) {
     name: "House",
     imagePath: "home.png",
     active: true,
-    items: [elecDemandHouse, houseArea, heatingDemandHouse],
+    items: [elecDemandHouse, houseArea],
   };
 
   const ev = {
@@ -130,7 +130,7 @@ export const CalculationProvider = function (props) {
     name: "Heat Pump",
     imagePath: "fan.png",
     active: usePump,
-    items: [pumpPower],
+    items: [heatingDemandHouse],
   };
 
   const battery = {
@@ -170,7 +170,7 @@ export const CalculationProvider = function (props) {
     title: "Average day",
     icon: "cloudy.png",
     active: true,
-    solarPerDay: 2.85,
+    solarPerDay: 2.1,
   };
 
   const summerDay = {
@@ -181,31 +181,49 @@ export const CalculationProvider = function (props) {
     solarPerDay: 4.3,
   };
 
+  const [activeDay, setActiveDay] = useState(averageDay);
+
   const dayTypes = [winterDay, averageDay, summerDay];
 
   const elecDemandHeatPump = 0;
 
   const components = [house, ev, solar, grid, battery, hp];
 
+  const copPump = 5;
+  const elecDemandFromHeatingPerDay = heatingDemandHouse.value / copPump / 140;
+
   const elecDemandHousePerDay =
-    (elecDemandHouse.value - elecDemandHeatPump) / 365;
+    (elecDemandHouse.value - elecDemandHeatPump) / 365 +
+    elecDemandFromHeatingPerDay +
+    ((80 - carChargeLevel.value) * carEnergy.value) / 100;
 
   const solarProductionPerDay =
-    (averageDay.solarPerDay * moduleAmount.value * modulePower.value) / 1000;
-  const gridConsumption = Math.max(
-    elecDemandHousePerDay - solarProductionPerDay,
-    0
-  );
-  const gridFeedIn = Math.max(solarProductionPerDay - elecDemandHousePerDay, 0);
+    (activeDay.solarPerDay * moduleAmount.value * modulePower.value) / 1000;
+
+  const gridFeedIn =
+    (Math.max(solarProductionPerDay - elecDemandHousePerDay, 0) *
+      feedInTarif.value) /
+    100;
 
   const autarky =
-    Math.max(elecDemandHousePerDay - gridConsumption, 0) /
-    elecDemandHousePerDay;
+    (Math.max(
+      elecDemandHousePerDay -
+        Math.max(elecDemandHousePerDay - solarProductionPerDay, 0),
+      0
+    ) /
+      elecDemandHousePerDay) *
+    Math.min(batEnergy.value / elecDemandHousePerDay, 1) *
+    100;
+
+  const gridConsumption = elecDemandHousePerDay * (1 - autarky / 100);
+
+  const gridConsumptionPrice = (gridConsumption * gridElectricity.value) / 100;
 
   const results = {
     elecDemandHousePerDay,
     solarProductionPerDay,
     gridConsumption,
+    gridConsumptionPrice,
     gridFeedIn,
     autarky,
   };
@@ -242,7 +260,9 @@ export const CalculationProvider = function (props) {
   }
 
   return (
-    <CalculationContext.Provider value={{ results, components, dayTypes }}>
+    <CalculationContext.Provider
+      value={{ results, components, dayTypes, setActiveDay, activeDay }}
+    >
       {props.children}
     </CalculationContext.Provider>
   );
@@ -250,7 +270,9 @@ export const CalculationProvider = function (props) {
 
 export function useItem(componentId) {
   const components = useContext(CalculationContext);
-  const component = components.find((component) => componentId == component.id);
+  const component = components.find(
+    (component) => componentId === component.id
+  );
   return {
     component,
   };

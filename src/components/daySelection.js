@@ -4,14 +4,10 @@ import DaySelectionElement from "./daySelectionElement";
 import { CalculationContext } from "../context/CalculationContext";
 
 export default function DaySelection() {
-  const [activeDay, setActiveDay] = useState(2);
-  const { dayTypes } = useContext(CalculationContext);
+  const { dayTypes, setActiveDay, activeDay } = useContext(CalculationContext);
 
   const changeActiveDay = (id) => {
-    setActiveDay(id);
-    console.log(activeDay);
-    console.log(activeDay);
-    console.log(activeDay);
+    setActiveDay(dayTypes.find((day) => day.id === id));
   };
 
   return (
@@ -24,7 +20,7 @@ export default function DaySelection() {
             onClick={() => {
               changeActiveDay(day.id);
             }}
-            active={day.id === activeDay}
+            active={day.id === activeDay.id}
           />
         ))}
       </Flex>

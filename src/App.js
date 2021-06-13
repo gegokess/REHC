@@ -36,8 +36,8 @@ function App() {
               lg: "80%",
             }}
           >
-            <Heading my={4} size="xl" color="white">
-              Electricity valuation
+            <Heading py="3rem" size="xl" color="white">
+              Renewable Energy House Calculator
             </Heading>
             <Center>
               <DaySelection></DaySelection>
