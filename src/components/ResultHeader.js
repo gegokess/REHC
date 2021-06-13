@@ -22,12 +22,24 @@ export default function Selection({ items, useSelection, name }) {
       boxShadow="0px 2px 20px 0px rgba(52, 152, 219, 0.2)"
       borderRadius=".4rem"
       p="2rem"
-      my="2rem"
+      my="4rem"
       display="flex"
       flexWrap="wrap"
       alignItems="center"
       justifyContent="center"
+      position="relative"
     >
+      <Box
+        position="absolute"
+        background="#34495e"
+        top="0"
+        mt="-1.5rem"
+        p="1rem"
+        px="2rem"
+        borderRadius=".5rem"
+      >
+        <Heading size="md">Results For One Day</Heading>
+      </Box>
       <ResultElement
         value={elecDemandHousePerDay}
         name="Electricity demand"
@@ -39,7 +51,7 @@ export default function Selection({ items, useSelection, name }) {
         name="Solar Production"
         unit="kWh"
       />
-      <ResultElement value={autarky} name="Autarkie" unit="%" />
+      <ResultElement value={autarky} name="Autarky" unit="%" />
       <ResultElement
         value={gridConsumptionPrice}
         name="Grid consumption Price"
