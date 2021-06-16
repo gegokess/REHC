@@ -1,5 +1,4 @@
-import { useConst } from "@chakra-ui/hooks";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 export const CalculationContext = createContext();
 
@@ -30,14 +29,13 @@ export const CalculationProvider = function (props) {
 
   // Heat Pump
   const usePump = useSwitchInput(false);
-  const pumpPower = useUnitFormInput("Heat pump power", 5, "kW", 1, 15, 1);
   const heatingDemandHouse = useUnitFormInput(
     "House heating demand",
     0,
     "kWh",
     0,
-    10000,
-    500
+    50000,
+    5000
   );
 
   const useGrid = useSwitchInput(true);
@@ -62,22 +60,6 @@ export const CalculationProvider = function (props) {
   // EV
   const useCar = useSwitchInput(true);
   const carEnergy = useUnitFormInput("Car battery size", 40, "kWh", 5, 100, 5);
-  const carConsumption = useUnitFormInput(
-    "Car consumption",
-    14,
-    "kWh/100km",
-    5,
-    40,
-    1
-  );
-  const range = useUnitFormInput(
-    "Estimated range per year",
-    15000,
-    "km",
-    3000,
-    100000,
-    3000
-  );
   const carChargeLevel = useUnitFormInput(
     "Current battery charge level",
     60,
@@ -86,22 +68,12 @@ export const CalculationProvider = function (props) {
     80,
     1
   );
-  const carChargeGoal = useUnitFormInput(
-    "Battery charge goal",
-    80,
-    "%",
-    1,
-    100,
-    1
-  );
 
   // Battery
   const useBattery = useSwitchInput(false);
   const batEnergy = useUnitFormInput("Battery size", 12, "kWh", 2, 25, 1);
 
   // House
-  const [data, setData] = useState(null);
-  // const electricityPrice = useFormInput(28.5);
 
   const house = {
     id: 0,
@@ -185,15 +157,14 @@ export const CalculationProvider = function (props) {
 
   const dayTypes = [winterDay, averageDay, summerDay];
 
-  const elecDemandHeatPump = 0;
-
   const components = [house, ev, solar, grid, battery, hp];
 
   const copPump = 5;
-  const elecDemandFromHeatingPerDay = heatingDemandHouse.value / copPump / 140;
+
+  const elecDemandFromHeatingPerDay = heatingDemandHouse.value / copPump / 365;
 
   const elecDemandHousePerDay =
-    (elecDemandHouse.value - elecDemandHeatPump) / 365 +
+    elecDemandHouse.value / 365 +
     elecDemandFromHeatingPerDay +
     ((80 - carChargeLevel.value) * carEnergy.value) / 100;
 

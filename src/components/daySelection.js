@@ -4,10 +4,15 @@ import DaySelectionElement from "./daySelectionElement";
 import { CalculationContext } from "../context/CalculationContext";
 
 export default function DaySelection() {
-  const { dayTypes, setActiveDay, activeDay } = useContext(CalculationContext);
+  const { dayTypes, setActiveDay, activeDay, components } =
+    useContext(CalculationContext);
+  const heatingComponent = components.find((component) => component.id === 2);
 
   const changeActiveDay = (id) => {
-    setActiveDay(dayTypes.find((day) => day.id === id));
+    const newActiveDay = dayTypes.find((day) => day.id === id);
+    setActiveDay(newActiveDay);
+    const heatingValue = newActiveDay.id === 1 ? 25000 : 0;
+    heatingComponent.items[0].onChange(heatingValue);
   };
 
   return (

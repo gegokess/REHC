@@ -1,4 +1,5 @@
 import { Heading, Box, Text, Flex } from "@chakra-ui/layout";
+import CountUp from "react-countup";
 
 export default function ResultElement({ name, value, unit }) {
   return (
@@ -13,7 +14,12 @@ export default function ResultElement({ name, value, unit }) {
     >
       <Box display="flex" textAlign="center" alignItems="baseline">
         <Heading as="h4" size="lg">
-          {value.toFixed(2)}
+          <CountUp
+            end={value.toFixed(2)}
+            separator=","
+            decimals={1}
+            decimal="."
+          ></CountUp>
         </Heading>
         <Text ml=".3rem" my="1rem" fontSize="md" color="#95a5a6">
           {unit}
