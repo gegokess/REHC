@@ -14,12 +14,7 @@ export default function ResultElement({ name, value, unit }) {
     >
       <Box display="flex" textAlign="center" alignItems="baseline">
         <Heading as="h4" size="lg">
-          <CountUp
-            end={value.toFixed(2)}
-            separator=","
-            decimals={1}
-            decimal="."
-          ></CountUp>
+          <CountUp end={value} separator="," decimals={1} decimal="."></CountUp>
         </Heading>
         <Text ml=".3rem" my="1rem" fontSize="md" color="#95a5a6">
           {unit}
