@@ -1,7 +1,6 @@
 import React from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 
-import "./App.css";
 import { Box, Center } from "@chakra-ui/react";
 import { Container, Heading } from "@chakra-ui/react";
 import ResultHeader from "./components/ResultHeader";

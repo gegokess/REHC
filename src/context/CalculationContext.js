@@ -102,7 +102,7 @@ export const CalculationProvider = function (props) {
   const battery = {
     id: 3,
     name: "House battery",
-    imagePath: "battery.png",
+    imagePath: "battery-level.png",
     active: useBattery,
     items: [batEnergy],
   };
