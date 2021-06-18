@@ -80,7 +80,7 @@ export const CalculationProvider = function (props) {
     name: "House",
     imagePath: "home.png",
     active: true,
-    items: [elecDemandHouse, houseArea],
+    items: [elecDemandHouse],
   };
 
   const ev = {
@@ -151,7 +151,7 @@ export const CalculationProvider = function (props) {
 
   const dayTypes = [winterDay, averageDay, summerDay];
 
-  const components = [house, ev, solar, grid, battery, hp];
+  const components = [grid, ev, solar, house, battery, hp];
 
   const copPump = 5;
 
