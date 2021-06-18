@@ -20,7 +20,7 @@ function App() {
               lg: "80%",
             }}
           >
-            <Heading py="3rem" size="xl" color="white">
+            <Heading py="3rem" size="xl" color="white" textAlign="center">
               Renewable Energy House Calculator
             </Heading>
             <Center>
