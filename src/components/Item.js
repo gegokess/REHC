@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Slider,
   SliderTrack,
@@ -24,8 +24,6 @@ export default function HomeInstallation({
   item,
   disabled,
 }) {
-  const [setChecked] = useState(true);
-
   const format = (val) => val + " " + item.unit;
 
   return (

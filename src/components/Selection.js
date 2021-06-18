@@ -1,4 +1,4 @@
-import React, { setState } from "react";
+import React from "react";
 import HomeInstallation from "./Item";
 
 import { Box, Heading, Image, Spacer } from "@chakra-ui/react";
