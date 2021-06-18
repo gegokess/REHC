@@ -13,7 +13,7 @@ export const CalculationProvider = function (props) {
     500
   );
 
-  const houseArea = useUnitFormInput("House area", 150, "m²", 50, 400, 10);
+  // const houseArea = useUnitFormInput("House area", 150, "m²", 50, 400, 10);
 
   // Solar
   const useSolar = useSwitchInput(false);
