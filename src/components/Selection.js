@@ -1,14 +1,7 @@
 import React, { setState } from "react";
 import HomeInstallation from "./Item";
 
-import {
-  Box,
-  Badge,
-  Heading,
-  CloseButton,
-  Image,
-  Spacer,
-} from "@chakra-ui/react";
+import { Box, Heading, Image, Spacer } from "@chakra-ui/react";
 
 export default function Selection({ items, id, name, imagePath }) {
   return (
@@ -30,7 +23,7 @@ export default function Selection({ items, id, name, imagePath }) {
       </Box>
       <Box>
         {items.map((item, index) => (
-          <HomeInstallation key={index} item={item} id={id}></HomeInstallation>
+          <HomeInstallation key={index} item={item} id={id} />
         ))}
       </Box>
     </Box>

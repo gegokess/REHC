@@ -1,7 +1,6 @@
-import React, { setState, useContext } from "react";
-import HomeInstallation from "./Item";
+import React, { useContext } from "react";
 
-import { Spacer, IconButton, Wrap, WrapItem } from "@chakra-ui/react";
+import { Wrap, WrapItem } from "@chakra-ui/react";
 import { CalculationContext } from "../context/CalculationContext";
 import Selection from "./Selection";
 

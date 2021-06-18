@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Box, Heading, Flex, Image, useConst } from "@chakra-ui/react";
+import React, { useContext } from "react";
+import { Flex } from "@chakra-ui/react";
 import DaySelectionElement from "./daySelectionElement";
 import { CalculationContext } from "../context/CalculationContext";
 

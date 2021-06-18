@@ -1,4 +1,4 @@
-import { Heading, Box, Text, Flex } from "@chakra-ui/layout";
+import { Heading, Box, Text } from "@chakra-ui/layout";
 import CountUp from "react-countup";
 
 export default function ResultElement({ name, value, unit }) {

@@ -88,13 +88,7 @@ export const CalculationProvider = function (props) {
     name: "Electric vehicle",
     imagePath: "car.png",
     active: useCar,
-    items: [
-      carEnergy,
-      // carConsumption,
-      // range,
-      carChargeLevel,
-      //carChargeGoal,
-    ],
+    items: [carEnergy, carChargeLevel],
   };
 
   const hp = {

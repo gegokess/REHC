@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   Slider,
   SliderTrack,
@@ -15,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 
 import { Flex, Text, Spacer } from "@chakra-ui/react";
-import { CalculationContext } from "../context/CalculationContext";
 
 export default function HomeInstallation({
   name,
@@ -25,11 +24,7 @@ export default function HomeInstallation({
   item,
   disabled,
 }) {
-  const [checked, setChecked] = useState(true);
-
-  const toggleChecked = () => {
-    setChecked((prev) => !prev);
-  };
+  const [setChecked] = useState(true);
 
   const format = (val) => val + " " + item.unit;
 
