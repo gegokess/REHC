@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 
 export const CalculationContext = createContext();
 
@@ -13,10 +13,7 @@ export const CalculationProvider = function (props) {
     500
   );
 
-  // const houseArea = useUnitFormInput("House area", 150, "m²", 50, 400, 10);
-
   // Solar
-  const useSolar = useSwitchInput(false);
   const modulePower = useUnitFormInput(
     "Solar power size",
     275,
@@ -28,7 +25,6 @@ export const CalculationProvider = function (props) {
   const moduleAmount = useUnitFormInput("Amount of Modules", 24, "", 6, 48, 6);
 
   // Heat Pump
-  const usePump = useSwitchInput(false);
   const heatingDemandHouse = useUnitFormInput(
     "House heating demand",
     0,
@@ -38,7 +34,6 @@ export const CalculationProvider = function (props) {
     5000
   );
 
-  const useGrid = useSwitchInput(true);
   const gridElectricity = useUnitFormInput(
     "Electricity tariff",
     28.5,
@@ -58,7 +53,6 @@ export const CalculationProvider = function (props) {
   );
 
   // EV
-  const useCar = useSwitchInput(true);
   const carEnergy = useUnitFormInput("Car battery size", 40, "kWh", 5, 100, 5);
   const carChargeLevel = useUnitFormInput(
     "Current battery charge level",
@@ -70,64 +64,61 @@ export const CalculationProvider = function (props) {
   );
 
   // Battery
-  const useBattery = useSwitchInput(false);
   const batEnergy = useUnitFormInput("Battery size", 12, "kWh", 2, 25, 1);
 
   // House
-
   const house = {
     id: 0,
     name: "House",
     imagePath: "home.png",
-    active: true,
     items: [elecDemandHouse],
   };
 
+  // Car
   const ev = {
     id: 1,
     name: "Electric vehicle",
     imagePath: "car.png",
-    active: useCar,
     items: [carEnergy, carChargeLevel],
   };
 
+  // Heat Pump
   const hp = {
     id: 2,
     name: "Heat Pump",
     imagePath: "fan.png",
-    active: usePump,
     items: [heatingDemandHouse],
   };
 
+  // House battery
   const battery = {
     id: 3,
     name: "House battery",
     imagePath: "battery-level.png",
-    active: useBattery,
     items: [batEnergy],
   };
 
+  // Solar panels
   const solar = {
     id: 4,
     name: "Solar Panels",
     imagePath: "solar-panel.png",
-    active: useSolar,
     items: [modulePower, moduleAmount],
   };
 
+  // Grid
   const grid = {
     id: 5,
     name: "Grid",
     imagePath: "power-line.png",
-    active: useGrid,
     items: [gridElectricity, feedInTarif],
   };
 
+  // Day types
   const winterDay = {
     id: 1,
     title: "Winter day",
     icon: "snowflake.png",
-    active: false,
     solarPerDay: 0.86,
   };
 
@@ -135,7 +126,6 @@ export const CalculationProvider = function (props) {
     id: 2,
     title: "Average day",
     icon: "cloudy.png",
-    active: true,
     solarPerDay: 2.1,
   };
 
@@ -143,7 +133,6 @@ export const CalculationProvider = function (props) {
     id: 3,
     title: "Summer day",
     icon: "sun.png",
-    active: false,
     solarPerDay: 4.3,
   };
 
@@ -193,19 +182,6 @@ export const CalculationProvider = function (props) {
     autarky,
   };
 
-  function useSwitchInput(initialValue) {
-    const [value, setValue] = useState(initialValue);
-
-    function handleChange(e) {
-      setValue(!value);
-    }
-
-    return {
-      value,
-      onChange: handleChange,
-    };
-  }
-
   function useUnitFormInput(name, initialValue, unit, min, max, step) {
     const [value, setValue] = useState(initialValue);
 
@@ -232,13 +208,3 @@ export const CalculationProvider = function (props) {
     </CalculationContext.Provider>
   );
 };
-
-export function useItem(componentId) {
-  const components = useContext(CalculationContext);
-  const component = components.find(
-    (component) => componentId === component.id
-  );
-  return {
-    component,
-  };
-}
