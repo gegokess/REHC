@@ -16,16 +16,7 @@ import {
 
 import { Flex, Text, Spacer } from "@chakra-ui/react";
 
-export default function HomeInstallation({
-  name,
-  min,
-  max,
-  step,
-  item,
-  disabled,
-}) {
-  const format = (val) => val + " " + item.unit;
-
+export default function HomeInstallation({ item }) {
   return (
     <div>
       <Flex py="2" align="center">
@@ -37,19 +28,23 @@ export default function HomeInstallation({
           <NumberInput
             maxW="150px"
             ml="2rem"
-            value={format(item.value)}
-            onChange={item.onChange}
+            value={item.value}
+            onChange={(_valueString, valueNumber) => {
+              if (!Number.isNaN(valueNumber)) {
+                item.onChange(valueNumber);
+              }
+            }}
             min={item.min}
             max={item.max}
             step={item.step}
           >
-            <Spacer />
             <NumberInputField />
             <NumberInputStepper>
               <NumberIncrementStepper />
               <NumberDecrementStepper />
             </NumberInputStepper>
           </NumberInput>
+          <Text ml="0.5rem">{item.unit}</Text>
         </Flex>
       </Flex>
       <Slider
